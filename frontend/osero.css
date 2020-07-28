@@ -1,0 +1,29 @@
+#field td {
+  text-align: center;
+  border: 1px solid black;
+  width: 50px;
+  height: 50px;
+  background-color: #00897b;
+  text-align: center;
+  vertical-align: middle;
+  table-layout: fixed;
+  padding: 1px 1px 1px 1px;
+  font-size: 33px;
+}
+
+#field {
+  margin-left: 3px;
+}
+
+.center {
+  text-align: center;
+}
+
+.tb {
+  background-color: black;
+  width: 456px;
+  margin: 50px auto;
+}
+html {
+  background-color: #f9fbe7;
+}
