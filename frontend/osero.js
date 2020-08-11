@@ -1,4 +1,3 @@
-//フロントサイド🟦
 let ban = document.getElementById("field");
 let tarn_msg = document.getElementById("tarn");
 let turn = 1;
@@ -49,6 +48,10 @@ for (let x = 0; x < 8; x++) {
       })
         .done(function (data) {
           let dating = JSON.parse(data);
+          if (dating[2] == "true") {
+            alert("勝敗が決しました");
+            location.href = "/";
+          }
           ban_ar = dating[0];
           turn = dating[1];
           if (turn == 1) {
@@ -66,8 +69,6 @@ for (let x = 0; x < 8; x++) {
     };
   }
 }
-// // フロントサイド
-// // 盤面状況(配列)を実際の盤面へ反映させる処理
 function ban_set() {
   let stone = "";
   for (let x = 0; x < 8; x++) {
