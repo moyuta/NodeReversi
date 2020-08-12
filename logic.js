@@ -53,23 +53,23 @@ function rev(x, y, add_x, add_y) {
   }
   let reverse_num = 0;
   let turn_flg = 0;
-  let xx = x;
-  let yy = y;
+  let all_x = x;
+  let all_y = y;
 
   while (true) {
-    xx = xx + add_x;
-    yy = yy + add_y;
-    if (xx < 0 || xx > 7 || yy < 0 || yy > 7) {
+    all_x = all_x + add_x;
+    all_y = all_y + add_y;
+    if (all_x < 0 || all_x > 7 || all_y < 0 || all_y > 7) {
       break;
     }
-    if (state[xx][yy] == 0) {
+    if (state[all_x][all_y] == 0) {
       break;
     }
-    if (state[xx][yy] == turn) {
+    if (state[all_x][all_y] == turn) {
       turn_flg = 1;
       break;
     }
-    state[xx][yy] = state[xx][yy] * -1;
+    state[all_x][all_y] = state[all_x][all_y] * -1;
     reverse_num = reverse_num + 1;
   }
   if (reverse_num > 0) {
