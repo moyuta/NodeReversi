@@ -18,7 +18,8 @@ module.exports = class logic {
   click(x, y) {
     if (state[x][y] == 0) {
       if (check(x, y) > 0) {
-        turn_chenge();
+        turn = turn * -1;
+        skip();
         win();
       }
     }
@@ -26,33 +27,6 @@ module.exports = class logic {
     return ret;
   }
 };
-
-function turn_chenge() {
-  turn = turn * -1;
-  let backup = new Array(8);
-  let check_count = 0;
-  for (let i = 0; i < state.length; i++) {
-    backup[i] = new Array(8);
-  }
-  for (let x = 0; x < 8; x++) {
-    for (let y = 0; y < 8; y++) {
-      backup[x][y] = state[x][y];
-    }
-  }
-  for (let x = 0; x < 8; x++) {
-    for (let y = 0; y < 8; y++) {
-      check_count = check_count + check(x, y);
-      for (let i = 0; i < 8; i++) {
-        for (let ii = 0; ii < 8; ii++) {
-          state[i][ii] = backup[i][ii];
-        }
-      }
-    }
-  }
-  if (check_count == 0) {
-    turn = turn * -1;
-  }
-}
 
 function check(x, y) {
   let count = 0;
@@ -79,24 +53,24 @@ function rev(x, y, add_x, add_y) {
   }
   let reverse_num = 0;
   let turn_flg = 0;
-  let all_x = x;
-  let all_y = y;
+  let xx = x;
+  let yy = y;
 
   while (true) {
-    all_x = all_x + add_x;
-    all_y = all_y + add_y;
-    if (all_x < 0 || all_x > 7 || all_y < 0 || all_y > 7) {
+    xx = xx + add_x;
+    yy = yy + add_y;
+    if (xx < 0 || xx > 7 || yy < 0 || yy > 7) {
       break;
     }
-    if (state[all_x][all_y] == 0) {
+    if (state[xx][yy] == 0) {
       break;
     }
-    if (state[all_x][all_y] == turn) {
+    if (state[xx][yy] == turn) {
       turn_flg = 1;
       break;
     }
-    state[all_x][all_y] = state[all_x][all_y] * -1;
-    reverse_num++;
+    state[xx][yy] = state[xx][yy] * -1;
+    reverse_num = reverse_num + 1;
   }
   if (reverse_num > 0) {
     if (turn_flg == 0) {
@@ -111,6 +85,33 @@ function rev(x, y, add_x, add_y) {
     }
   }
   return reverse_num;
+}
+
+function skip() {
+  let backup = new Array(8);
+  for (let i = 0; i < state.length; i++) {
+    backup[i] = new Array(8);
+  }
+  for (let x = 0; x < 8; x++) {
+    for (let y = 0; y < 8; y++) {
+      backup[x][y] = state[x][y];
+    }
+  }
+
+  let count_can = 0;
+  for (let i = 0; i < 8; i++) {
+    for (let j = 0; j < 8; j++) {
+      count_can = count_can + check(i, j);
+    }
+  }
+  for (let i = 0; i < 8; i++) {
+    for (let j = 0; j < 8; j++) {
+      state[i][j] = backup[i][j];
+    }
+  }
+  if (count_can == 0) {
+    turn = turn * -1;
+  }
 }
 
 function win() {
@@ -130,7 +131,6 @@ function win() {
     }
   }
   if (black == 0 || white == 0 || empty == 0) {
-    //emptyを作らずに black + white　でも良い
     judge = "true";
   }
 }
