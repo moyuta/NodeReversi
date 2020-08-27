@@ -1,11 +1,17 @@
 let turn = 0;
 let state = new Array(8);
+for (let i = 0; i < 8; i++) {
+  state[i] = new Array(8);
+}
+console.log(state);
 let judge = "false";
 
 module.exports = class logic {
   first() {
     for (let i = 0; i < 8; i++) {
-      state[i] = [0, 0, 0, 0, 0, 0, 0, 0];
+      for (let j = 0; j < 8; j++) {
+        state[i][j] = 0;
+      }
     }
     state[3][3] = -1;
     state[4][3] = 1;
@@ -16,7 +22,7 @@ module.exports = class logic {
   }
 
   click(x, y) {
-    if (state[x][y] == 0) {
+    if (state[y][x] == 0) {
       if (check(x, y) > 0) {
         turn = turn * -1;
         skip();
@@ -27,32 +33,31 @@ module.exports = class logic {
     return ret;
   }
 };
-
 function check(x, y) {
   let count = 0;
-  count = count + rev(x, y, 0, -1);
-  count = count + rev(x, y, 1, -1);
-  count = count + rev(x, y, 1, 0);
-  count = count + rev(x, y, 1, 1);
-  count = count + rev(x, y, 0, 1);
-  count = count + rev(x, y, -1, 1);
-  count = count + rev(x, y, -1, 0);
-  count = count + rev(x, y, -1, -1);
+  count = count + change(x, y, 0, -1);
+  count = count + change(x, y, 1, -1);
+  count = count + change(x, y, 1, 0);
+  count = count + change(x, y, 1, 1);
+  count = count + change(x, y, 0, 1);
+  count = count + change(x, y, -1, 1);
+  count = count + change(x, y, -1, 0);
+  count = count + change(x, y, -1, -1);
   return count;
 }
 
-function rev(x, y, add_x, add_y) {
+function change(x, y, add_x, add_y) {
   let backup = new Array(8);
   for (let i = 0; i < state.length; i++) {
     backup[i] = new Array(8);
   }
   for (let x = 0; x < 8; x++) {
     for (let y = 0; y < 8; y++) {
-      backup[x][y] = state[x][y];
+      backup[y][x] = state[y][x];
     }
   }
   let reverse_num = 0;
-  let turn_flg = 0;
+  let flag = 0;
   let all_x = x;
   let all_y = y;
 
@@ -62,18 +67,18 @@ function rev(x, y, add_x, add_y) {
     if (all_x < 0 || all_x > 7 || all_y < 0 || all_y > 7) {
       break;
     }
-    if (state[all_x][all_y] == 0) {
+    if (state[all_y][all_x] == 0) {
       break;
     }
-    if (state[all_x][all_y] == turn) {
-      turn_flg = 1;
+    if (state[all_y][all_x] == turn) {
+      flag = 1;
       break;
     }
-    state[all_x][all_y] = state[all_x][all_y] * -1;
+    state[all_y][all_x] = state[all_y][all_x] * -1;
     reverse_num = reverse_num + 1;
   }
   if (reverse_num > 0) {
-    if (turn_flg == 0) {
+    if (flag == 0) {
       for (let i = 0; i < 8; i++) {
         for (let ii = 0; ii < 8; ii++) {
           state[i][ii] = backup[i][ii];
@@ -81,7 +86,7 @@ function rev(x, y, add_x, add_y) {
         }
       }
     } else {
-      state[x][y] = turn;
+      state[y][x] = turn;
     }
   }
   return reverse_num;
@@ -94,7 +99,7 @@ function skip() {
   }
   for (let x = 0; x < 8; x++) {
     for (let y = 0; y < 8; y++) {
-      backup[x][y] = state[x][y];
+      backup[y][x] = state[y][x];
     }
   }
 
@@ -113,7 +118,6 @@ function skip() {
     turn = turn * -1;
   }
 }
-
 function win() {
   let black = 0;
   let white = 0;

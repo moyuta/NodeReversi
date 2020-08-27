@@ -42,8 +42,8 @@ for (let x = 0; x < 8; x++) {
         type: "POST",
         url: "/click",
         data: JSON.stringify({
-          x: this.parentNode.rowIndex,
-          y: this.cellIndex,
+          x: this.cellIndex,
+          y: this.parentNode.rowIndex,
         }),
       })
         .done(function (data) {
